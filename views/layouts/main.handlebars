@@ -2,7 +2,15 @@
 <html lang="en">
 
 <head>
-  <title>Title</title>
+  {{#if login}}
+  <title>The Tech Blog - Login</title>
+  {{/if}}
+  {{#if home}}
+  <title>The Tech Blog - Home</title>
+  {{/if}}
+  {{#if dashboard}}
+  <title>The Tech Blog - Dashboard</title>
+  {{/if}}
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
