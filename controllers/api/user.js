@@ -1,21 +1,20 @@
 const router = require('express').Router();
 
-
+const User = require('../../models/User');
 
 // Create a new user with signup
 // ENDPOINT: "/api/user/signup"
 router.post('/signup', async (req, res) => {
     try {
-        // const newUserData = await User.create({
-        //     username: req.body.username,
-        //     email: req.body.email,
-        //     password: req.body.password
-        // });
-        // req.session.save(() => {
-        //     req.session.loggedIn = true;
-        //     req.session.userid = newUserData.dataValues.id
-        //     res.status(200).json(newUserData);
-        // });
+        const newUser = await User.create({
+            username: req.body.username,
+            password: req.body.password
+        });
+        req.session.save(() => {
+            req.session.loggedIn = true;
+            req.session.userid = newUser.dataValues.id
+            res.status(200).json(newUser);
+        });
     } catch (e) {
         console.error(e);
         res.status(500).json(e);
@@ -26,29 +25,29 @@ router.post('/signup', async (req, res) => {
 // ENDPOINT: "/api/user/login"
 router.post('/login', async (req, res) => {
     try {
-        // const userData = await User.findOne({
-        //     where: {
-        //         email: req.body.email
-        //     }
-        // });
+        const user = await User.findOne({
+            where: {
+                username: req.body.username
+            }
+        });
 
-        // if (!userData) {
-        //     res.status(400).json({ message: 'Incorrect email or password.' });
-        //     return;
-        // }
+        if (!user) {
+            res.status(400).json({ message: 'Username not found!' });
+            return;
+        }
 
-        // const password = await userData.checkPassword(req.body.password);
+        const password = await user.checkPassword(req.body.password);
 
-        // if (!password) {
-        //     res.status(400).json({ message: 'Incorrect email or password.' });
-        //     return;
-        // }
+        if (!password) {
+            res.status(400).json({ message: 'Incorrect username or password.' });
+            return;
+        }
 
-        // req.session.save(() => {
-        //     req.session.loggedIn = true;
-        //     req.session.userid = userData.dataValues.id
-        //     res.status(200).json({ user: userData, message: "Log in successful" });
-        // });
+        req.session.save(() => {
+            req.session.loggedIn = true;
+            req.session.userid = user.dataValues.id
+            res.status(200).json({ user: user, message: "Log in successful" });
+        });
     } catch (e) {
         console.error(e);
         res.status(500).json(e);
@@ -59,14 +58,13 @@ router.post('/login', async (req, res) => {
 // ENDPOINT: "/api/user/logout"
 router.post('/logout', async (req, res) => {
     try {
-
-    //     if (req.session.loggedIn) {
-    //         req.session.destroy(() => {
-    //             res.status(200).end();
-    //         });
-    //     } else {
-    //         res.status(404).end();
-    //     }
+        if (req.session.loggedIn) {
+            req.session.destroy(() => {
+                res.status(200).end();
+            });
+        } else {
+            res.status(404).end();
+        }
     } catch (e) {
         console.error(e);
         res.status(500).json(e);

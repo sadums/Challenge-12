@@ -18,12 +18,29 @@ const switchSignUpBtn = document.getElementById('switch-sign-up');
 
 
 // Login form events
-loginBtn.addEventListener('click', (event) => {
+loginBtn.addEventListener('click', async (event) => {
     // store inputted values as variables
-    const username = loginUsername.value;
-    const password = loginPassword.value;
+    const username = loginUsername.value.trim();
+    const password = loginPassword.value.trim();
 
-    console.log(username, password);
+    if(username && password){
+        const response = await fetch('/api/user/login', {
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if(response.ok){
+            document.location.replace('/');
+        }else{
+            alert('Login failed!');
+        }
+    }else{
+        alert('Please fill in all fields');
+    }
+
+    loginUsername.value = '';
+    loginPassword.value = '';
 });
 switchSignUpBtn.addEventListener('click', (event) => {
     // display sign up form and hide login form
@@ -33,13 +50,39 @@ switchSignUpBtn.addEventListener('click', (event) => {
 
 
 // Sign up form events
-signUpBtn.addEventListener('click', (event) => {
+signUpBtn.addEventListener('click', async(event) => {
     // store inputted values as variables
-    const username = signUpUsername.value;
-    const password = signUpPassword.value;
-    const confirmPassword = signUpConfirmPassword.value;
+    const username = signUpUsername.value.trim();
+    const password = signUpPassword.value.trim();
+    const confirmPassword = signUpConfirmPassword.value.trim();
 
-    console.log(username, password, confirmPassword);
+    if(password !== confirmPassword){
+        alert('Passwords do not match!');
+        return;
+    }
+    if(password.length < 8){
+        alert('Password is too short');
+        return;
+    }
+    if(username && password && confirmPassword){
+        const response = await fetch('/api/user/signup', {
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if(response.ok){
+            document.location.replace('/');
+        }else{
+            alert('Sign up failed');
+        }
+    }else{
+        alert('Please fill in all fields')
+    }
+
+    signUpUsername = '';
+    signUpPassword = '';
+    signUpConfirmPassword = '';
 });
 switchLoginBtn.addEventListener('click', (event) => {
     // display sign up form and hide login form

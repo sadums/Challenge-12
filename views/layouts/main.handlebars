@@ -38,9 +38,16 @@
             <a class="nav-link" href="/dashboard">Dashboard</a>
           </li>
           <li class="nav-item mx-3">
-            <a class="nav-link" href="/logout">Logout</a>
+            <a class="nav-link" id="logout" style="cursor: pointer;">Logout</a>
           </li>
         </ul>
+        <script>
+          //logout script
+          document.getElementById('logout').addEventListener('click', (event) => {
+            fetch('/api/user/logout', { method: 'POST' })
+            .then(() => location.reload());
+          });
+        </script>
         {{else}}
         <ul class="navbar-nav ms-auto mt-2 mt-lg-0 mx-5">
           <li class="nav-item mx-3">
@@ -55,7 +62,9 @@
     </nav>
   </header>
 
-  {{{body}}}
+  <main class="d-flex justify-content-center align-items-stretch p-5">
+    {{{body}}}
+  </main>
 
   <!-- Bootstrap JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
