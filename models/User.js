@@ -17,7 +17,7 @@ User.init(
             autoIncrement: true
         },
         username: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(25),
             allowNull: false,
             unique: true
         },
@@ -25,7 +25,7 @@ User.init(
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                len: [8],
+                len: [8,80],
             }
         }
     },

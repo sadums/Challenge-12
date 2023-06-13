@@ -6,7 +6,10 @@ const { Post, User } = require('../models');
 // Renders the main page
 router.get('/', async (req, res) => {
     try {
+        const posts = await Post.findAll();
+
         res.render('home', {
+            posts,
             loggedIn: req.session.loggedIn,
             home: true
         });
@@ -50,7 +53,6 @@ router.get('/dashboard', async (req, res) => {
             },
             include: [Post],
         });
-        console.log(user.dataValues);
         res.render('dashboard', {
             data: user.dataValues,
             loggedIn: req.session.loggedIn,

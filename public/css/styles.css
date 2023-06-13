@@ -1,0 +1,10 @@
+
+/* snippet from https://albertwalicki.com/learn/solutions/how-to-limit-text-to-n-lines*/
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+            line-clamp: 2;
+    -webkit-box-orient: vertical;
+ }
