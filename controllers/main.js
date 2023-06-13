@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const { Post, User } = require('../models');
+
 // Endpoint: '/'
 // Renders the main page
 router.get('/', async (req, res) => {
@@ -34,18 +36,26 @@ router.get('/login', (req, res) => {
 });
 
 // Endpoint: '/dashboard'
-// Renders the main page
+// Renders the dashboard page
 router.get('/dashboard', async (req, res) => {
     try {
-        if (req.session.loggedIn) {
-            res.render('/dashboard', {
-                loggedIn: req.session.loggedIn,
-                dashboard: true
-            });
+        if (!req.session.loggedIn) {
+            res.redirect('/login');
             return;
         }
 
-        res.redirect('/login');
+        user = await User.findByPk(req.session.userid, {
+            attributes:{
+                exclude: ['password', 'id']
+            },
+            include: [Post],
+        });
+        console.log(user.dataValues);
+        res.render('dashboard', {
+            data: user.dataValues,
+            loggedIn: req.session.loggedIn,
+            dashboard: true
+        });
     } catch (e) {
         console.error(e);
         res.status(500).json(e);
