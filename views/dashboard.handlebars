@@ -1,7 +1,8 @@
 <a name="" id="show-post-form" class="btn btn-secondary p-3 mt-5" role="button">+ New Post</a>
 
 <section id="current-posts" class="w-100">
-    {{#each data.posts}}
+    {{log 'hello'}}
+    {{#each data.posts as |post|}}
     {{> dashboard-post}}
     {{/each}}
 </section>

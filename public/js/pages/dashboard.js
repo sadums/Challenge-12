@@ -1,3 +1,4 @@
+
 // Create new post HTML elements
 const createForm = document.getElementById('post-form');
 
@@ -24,7 +25,15 @@ createPostBtn.addEventListener('click', async(event) => {
     const content = postContent.value.trim();
     
     // send data to backend
-    console.log(title, content);
+    fetch('/api/post/create', {
+        method: 'POST',
+        body: JSON.stringify({ title, content }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+    });
 
     hideForm();
 });
