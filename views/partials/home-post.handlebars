@@ -1,0 +1,17 @@
+<div class="card text-white bg-dark m-5" id="{{dataValues.id}}" name="post-container" onclick="goToPost(event)">
+    <div id="info" style="display: none">
+        <div id="title-{{dataValues.id}}">{{dataValues.title}}</div>
+        <div id="date-{{dataValues.id}}">{{dataValues.date}}</div>
+        <div id="author-{{dataValues.id}}">{{dataValues.author}}</div>
+        <div id="content-{{dataValues.id}}">{{dataValues.content}}</div>
+    </div>
+    <div class="card-body pb-1 pt-3 px-4">
+        <h4 class="card-title display-5">
+            {{dataValues.title}}
+            <h5>Posted on {{dataValues.date}} by {{dataValues.author}}</h5>
+        </h4>
+        <p class="card-text mt-4 truncate">
+            {{dataValues.content}}
+        </p>
+    </div>
+</div>

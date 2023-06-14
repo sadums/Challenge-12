@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { Post, User } = require('../../models');
+const { Comment, Post, User } = require('../../models');
 
 // Get a post by id
 // ENDPOINT: "/api/post/:id"
@@ -142,6 +142,70 @@ router.delete('/delete/:id', async (req, res) => {
 
         res.status(200).json({ message: 'post deleted' });
     } catch (e) {
+        console.error(e);
+        res.status(500).json(e);
+    }
+});
+
+// Create a new comment on a post
+// ENDPOINT: "/api/post/comment"
+router.post('/comment', async(req, res) => {
+    try{
+        if(!req.body.content || !req.body.postid){
+            res.status(400).json({ message: 'req.body is not complete!'});
+            return;
+        }
+
+        if (!req.session.loggedIn) {
+            res.status(400).json({ message: 'please login to write a comment.' });
+            return;
+        }
+
+        const user = await User.findByPk(req.session.userid);
+
+        if (!user) {
+            res.status(404).json({ message: 'Unable to find user in the database.' });
+            return;
+        }
+
+        const post = await Post.findByPk(req.body.postid);
+
+        if(!post){
+            res.status(404).json({message: 'unable to find post'});
+            return;
+        }
+
+        const comment = await Comment.create({
+            content: req.body.content,
+            author: user.dataValues.username,
+            post_id: req.body.postid
+        });
+
+        res.status(200).json(comment);
+    }catch(e){
+        console.error(e);
+        res.status(500).json(e);
+    }
+});
+
+// Get all comments for one post
+// ENDPOINT: "/api/post/comments/:id"
+router.get('/comments/:id', async(req, res) => {
+    try{
+        const post = await Post.findOne({
+            where: {
+                id: req.params.id,
+            },
+            include: Comment
+        });
+
+        if (!post) {
+            res.status(404).json({ message: "failed to find post" });
+            return;
+        }
+
+        res.status(200).json(post.comments);
+    }catch(e){
         console.error(e);
         res.status(500).json(e);
     }
