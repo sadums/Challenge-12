@@ -1,4 +1,4 @@
-# Tech Blog
+# Your Tech Blog
 
 ## Description
 
