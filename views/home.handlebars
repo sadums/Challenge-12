@@ -18,14 +18,17 @@
                 Comments:
             </h4>
         </div>
-        <a name="" id="add-comment" class="btn btn-primary" href="#" role="button">+ Add comment</a>
+        {{#if loggedIn}}
+        <a name="" id="add-comment" class="btn btn-info text-white" href="#" role="button">+ Add comment</a>
         <div id="post-comment-section" style="display: none">
             <div class="mb-3 d-flex">
                 <input type="text" class="form-control" name="" id="post-comment-content" aria-describedby="helpId"
                     placeholder="Comment here...">
-                <a name="" id="post-comment" class="btn btn-primary mx-3" href="#" role="button">Post</a>
-                <a name="" id="cancel-comment" class="btn btn-primary" href="#" role="button">Cancel</a>
+                <a name="" id="post-comment" class="btn btn-info text-white mx-3" href="#" role="button">Post</a>
+                <a name="" id="cancel-comment" class="btn btn-info text-white" href="#" role="button">Cancel</a>
             </div>
         </div>
+        {{/if}}
     </div>
+    <a name="" id="back-button" class="btn btn-info text-white mx-4 mb-3" href="#" role="button">Back</a>
 </div>

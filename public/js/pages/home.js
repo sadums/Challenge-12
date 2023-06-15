@@ -36,10 +36,9 @@ const goToPost = function (event) {
     fetch(`/api/post/comments/${currentPostId}`)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data)
-            if(data.length > 0){
+            if (data.length > 0) {
                 comments.setAttribute('style', 'display: block');
-            }else{
+            } else {
                 return;
             }
             for (let i = 0; i < data.length; i++) {
@@ -71,47 +70,56 @@ const goToPost = function (event) {
         });
 }
 
+// leave current post
+const backBtn = document.getElementById('back-button');
+
+backBtn.addEventListener('click', (event) => {
+    postSection.setAttribute('style', 'display: block');
+    postView.setAttribute('style', 'display: none');
+});
 
 
 /* Add Comment Section */
-const comments = document.getElementById('comments')
+try {
+    const comments = document.getElementById('comments')
 
-const addCommentBtn = document.getElementById('add-comment');
-const addCommentSection = document.getElementById('post-comment-section');
+    const addCommentBtn = document.getElementById('add-comment');
+    const addCommentSection = document.getElementById('post-comment-section');
 
-const commentContent = document.getElementById('post-comment-content');
+    const commentContent = document.getElementById('post-comment-content');
 
-const cancelCommentBtn = document.getElementById('cancel-comment');
-const postCommentBtn = document.getElementById('post-comment');
+    const cancelCommentBtn = document.getElementById('cancel-comment');
+    const postCommentBtn = document.getElementById('post-comment');
 
 
-addCommentBtn.addEventListener('click', (event) => {
-    addCommentBtn.setAttribute('style', 'display: none');
-    addCommentSection.setAttribute('style', 'display: block');
-});
+    addCommentBtn.addEventListener('click', (event) => {
+        addCommentBtn.setAttribute('style', 'display: none');
+        addCommentSection.setAttribute('style', 'display: block');
+    });
 
-postCommentBtn.addEventListener('click', (event) => {
-    const content = commentContent.value;
+    postCommentBtn.addEventListener('click', (event) => {
+        const content = commentContent.value;
 
-    // send data to backend
-    fetch('/api/post/comment', {
-        method: 'POST',
-        body: JSON.stringify({
-            postid: currentPostId,
-            content
-        }),
-        headers: { 'Content-Type': 'application/json' }
-    })
-        .then((response) => {
-            if (response.ok) {
-                location.reload();
-            } else {
-                alert('failed to send comment');
-            }
-        });
-});
+        // send data to backend
+        fetch('/api/post/comment', {
+            method: 'POST',
+            body: JSON.stringify({
+                postid: currentPostId,
+                content
+            }),
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then((response) => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('failed to send comment');
+                }
+            });
+    });
 
-cancelCommentBtn.addEventListener('click', (event) => {
-    addCommentSection.setAttribute('style', 'display: none');
-    addCommentBtn.setAttribute('style', 'display: inline-block');
-});
+    cancelCommentBtn.addEventListener('click', (event) => {
+        addCommentSection.setAttribute('style', 'display: none');
+        addCommentBtn.setAttribute('style', 'display: inline-block');
+    });
+} catch (e) { }
